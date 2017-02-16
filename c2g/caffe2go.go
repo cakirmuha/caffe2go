@@ -2,7 +2,6 @@ package c2g
 
 import (
 	"errors"
-	"fmt"
 	"image"
 	"image/color"
 	"io/ioutil"
@@ -32,101 +31,69 @@ func NewCaffe2Go(modelPath string) (*Caffe2Go, error) {
 	}
 	var net network.Network
 	if len(netParameter.GetLayer()) != 0 {
-		showLayers(netParameter.GetLayer())
+		//showLayers(netParameter.GetLayer())
 		for i := range netParameter.GetLayer() {
 			switch netParameter.GetLayer()[i].GetType() {
 			case layers.InnerProduct:
-				fmt.Println(layers.InnerProduct)
 				fcLayer, err := SetupFullconnect(netParameter.GetLayer()[i])
 				if err != nil {
 					return nil, err
 				}
 				net.Add(fcLayer)
-				fmt.Println()
 			case layers.Convolution:
-				fmt.Println(layers.Convolution)
 				convLayer := SetupConvolution(netParameter.GetLayer()[i])
 				net.Add(convLayer)
-				fmt.Println()
 			case layers.Pooling:
-				fmt.Println(layers.Pooling)
 				poolLayer := SetupPooling(netParameter.GetLayer()[i])
 				net.Add(poolLayer)
-				fmt.Println()
 			case layers.Dropout:
-				fmt.Println(layers.Dropout)
 				dropoutLayer := SetupDropout(netParameter.GetLayer()[i])
 				net.Add(dropoutLayer)
-				fmt.Println()
 			case layers.Softmax:
-				fmt.Println(caffe.V1LayerParameter_SOFTMAX)
 				softMaxLayer := SetupSoftmaxLoss(netParameter.GetLayer()[i])
 				net.Add(softMaxLayer)
-				fmt.Println()
 			case layers.ReLU:
-				fmt.Println(layers.ReLU)
 				reluLayer := SetupReLU(netParameter.GetLayer()[i])
 				net.Add(reluLayer)
-				fmt.Println()
 			case layers.SoftmaxWithLoss:
-				fmt.Println(layers.SoftmaxWithLoss)
 				softmaxLossLayer := SetupSoftmaxLoss(netParameter.GetLayer()[i])
 				net.Add(softmaxLossLayer)
-				fmt.Println()
 			case layers.Lrn:
-				fmt.Println(layers.Lrn)
 				lrnLayer := SetupLRN(netParameter.GetLayer()[i])
 				net.Add(lrnLayer)
-				fmt.Println()
 			}
 		}
 	} else {
-		showV1Layers(netParameter.GetLayers())
+		//showV1Layers(netParameter.GetLayers())
 		for i := range netParameter.GetLayers() {
 			switch netParameter.GetLayers()[i].GetType() {
 			case caffe.V1LayerParameter_INNER_PRODUCT:
-				fmt.Println(caffe.V1LayerParameter_INNER_PRODUCT)
 				fcLayer, err := SetupFullconnect(netParameter.GetLayers()[i])
 				if err != nil {
 					return nil, err
 				}
 				net.Add(fcLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_CONVOLUTION:
-				fmt.Println(caffe.V1LayerParameter_CONVOLUTION)
 				convLayer := SetupConvolution(netParameter.GetLayers()[i])
 				net.Add(convLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_POOLING:
-				fmt.Println(caffe.V1LayerParameter_POOLING)
 				poolLayer := SetupPooling(netParameter.GetLayers()[i])
 				net.Add(poolLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_DROPOUT:
-				fmt.Println(caffe.V1LayerParameter_DROPOUT)
 				dropoutLayer := SetupDropout(netParameter.GetLayers()[i])
 				net.Add(dropoutLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_SOFTMAX:
-				fmt.Println(caffe.V1LayerParameter_SOFTMAX)
 				softMaxLayer := SetupSoftmaxLoss(netParameter.GetLayers()[i])
 				net.Add(softMaxLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_RELU:
-				fmt.Println(caffe.V1LayerParameter_RELU)
 				reluLayer := SetupReLU(netParameter.GetLayers()[i])
 				net.Add(reluLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_SOFTMAX_LOSS:
-				fmt.Println(caffe.V1LayerParameter_SOFTMAX_LOSS)
 				softmaxLossLayer := SetupSoftmaxLoss(netParameter.GetLayers()[i])
 				net.Add(softmaxLossLayer)
-				fmt.Println()
 			case caffe.V1LayerParameter_LRN:
-				fmt.Println(caffe.V1LayerParameter_LRN)
 				lrnLayer := SetupLRN(netParameter.GetLayers()[i])
 				net.Add(lrnLayer)
-				fmt.Println()
 			}
 		}
 	}

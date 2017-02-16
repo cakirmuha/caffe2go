@@ -2,7 +2,6 @@ package c2g
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/gkostadinov/caffe2go/layers"
 )
@@ -12,20 +11,13 @@ func SetupConvolution(layer LayerParameter) *layers.ConvolutionLayer {
 	blobs := layer.GetBlobs()
 	param := layer.GetConvolutionParam()
 	kernelSize := getKernelSize(param)
-	fmt.Println("KernelSize: ", kernelSize)
 	stride := getStride(param)
-	fmt.Println("Stride: ", stride)
 	pad := getPad(param)
-	fmt.Println("Padding: ", pad)
 	num := getNnum(blobs[0])
 	channels := getChannels(blobs[0])
 	nIn := uint32(channels) * param.GetGroup()
-	fmt.Println("nInput: ", nIn)
 	nOut := uint32(num)
-	fmt.Println("nOutput: ", nOut)
-	fmt.Println("Group: ", param.GetGroup())
 	biasTerm := param.GetBiasTerm()
-	fmt.Println("BiasTerm: ", biasTerm)
 	convLayer := layers.NewConvolutionLayer(layer.GetName(), layers.Convolution, nIn, nOut, kernelSize, stride, pad, biasTerm)
 	idx := 0
 	// Calculate kernelsize
@@ -53,20 +45,16 @@ func SetupFullconnect(layer LayerParameter) (*layers.FullconnectLayer, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("Width: ", width)
 	height, err := getHeight(blobs[0])
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("Height: ", height)
 	biasTerm := param.GetBiasTerm()
-	fmt.Println("BiasTerm: ", biasTerm)
 	fcLayer := layers.NewFullconnectLayer(layer.GetName(), layers.InnerProduct, width, height, biasTerm)
 	weights := blobs[0].GetData()
 	for i := 0; i < len(weights)/int(width); i++ {
 		fcLayer.Weights[i] = weights[i*int(width) : i*int(width)+int(width)]
 	}
-	fmt.Println(len(fcLayer.Weights), len(fcLayer.Weights[0]))
 	if biasTerm {
 		fcLayer.Bias = blobs[1].GetData()
 	}
@@ -78,11 +66,8 @@ func SetupFullconnect(layer LayerParameter) (*layers.FullconnectLayer, error) {
 func SetupPooling(layer LayerParameter) *layers.PoolingLayer {
 	param := layer.GetPoolingParam()
 	kernelSize := getKernelSize(param)
-	fmt.Println("KernelSize: ", kernelSize)
 	stride := getStride(param)
-	fmt.Println("Stride: ", stride)
 	pad := getPad(param)
-	fmt.Println("Padding: ", pad)
 	return layers.NewPoolingLayer(layer.GetName(), layers.Pooling, kernelSize, stride, pad)
 }
 
@@ -90,7 +75,6 @@ func SetupPooling(layer LayerParameter) *layers.PoolingLayer {
 func SetupDropout(layer LayerParameter) *layers.DropoutLayer {
 	param := layer.GetDropoutParam()
 	ratio := param.GetDropoutRatio()
-	fmt.Println(ratio)
 	return layers.NewDropoutLayer(layer.GetName(), layers.Dropout, ratio)
 }
 
@@ -98,7 +82,6 @@ func SetupDropout(layer LayerParameter) *layers.DropoutLayer {
 func SetupReLU(layer LayerParameter) *layers.ReLULayer {
 	param := layer.GetReluParam()
 	slope := param.GetNegativeSlope()
-	fmt.Println("Slope: ", slope)
 	reluLayer := layers.NewReLULayer(layer.GetName(), layers.ReLU, slope)
 	return reluLayer
 }
@@ -112,13 +95,9 @@ func SetupSoftmaxLoss(layer LayerParameter) *layers.SoftmaxLossLayer {
 func SetupLRN(layer LayerParameter) *layers.LRN {
 	param := layer.GetLrnParam()
 	k := param.GetK()
-	fmt.Println("k: ", k)
 	localSize := param.GetLocalSize()
-	fmt.Println("LocalSize: ", localSize)
 	alpha := param.GetAlpha()
-	fmt.Println("alpha: ", alpha)
 	beta := param.GetBeta()
-	fmt.Println("beta: ", beta)
 	return layers.NewLRNLayer(layer.GetName(), layers.Lrn, int(localSize), float64(k), float64(alpha), float64(beta))
 }
 
