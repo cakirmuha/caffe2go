@@ -7,11 +7,10 @@ import (
 	"image/color"
 	"io/ioutil"
 	"log"
-	"os"
 
-	"github.com/Rompei/caffe2go/caffe"
-	"github.com/Rompei/caffe2go/layers"
-	"github.com/Rompei/caffe2go/network"
+	"github.com/gkostadinov/caffe2go/caffe"
+	"github.com/gkostadinov/caffe2go/layers"
+	"github.com/gkostadinov/caffe2go/network"
 	"github.com/golang/protobuf/proto"
 	"github.com/nfnt/resize"
 )
@@ -137,24 +136,10 @@ func NewCaffe2Go(modelPath string) (*Caffe2Go, error) {
 }
 
 // Predict start network.
-func (c2g *Caffe2Go) Predict(imagePath string, size uint, means []float32) ([][][]float32, error) {
-	reader, err := os.Open(imagePath)
-	if err != nil {
-		return nil, err
-	}
-	defer reader.Close()
-
-	img, _, err := image.Decode(reader)
-	if err != nil {
-		return nil, err
-	}
+func (c2g *Caffe2Go) Predict(img image.Image, size uint, means []float32, endLayer string) ([][][]float32, error) {
 	img = resize.Resize(size, size, img, resize.Lanczos3)
 	input := im2vec(img, means)
-	//input, err = crop(input, 224)
-	if err != nil {
-		return nil, err
-	}
-	return c2g.Network.Predict(input)
+	return c2g.Network.Predict(input, endLayer)
 }
 
 func im2vec(img image.Image, means []float32) [][][]float32 {

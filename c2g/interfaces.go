@@ -1,6 +1,6 @@
 package c2g
 
-import "github.com/Rompei/caffe2go/caffe"
+import "github.com/gkostadinov/caffe2go/caffe"
 
 // LayerParameter is alias for LayerParameter.
 type LayerParameter interface {
