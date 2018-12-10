@@ -3,6 +3,7 @@ package layers
 import (
 	"github.com/Rompei/mat"
 	mm "gonum.org/v1/gonum/mat"
+	"github.com/lon9/exmat"
 )
 
 // ConvolutionLayer is layer of Convolution.
@@ -49,7 +50,7 @@ func (conv *ConvolutionLayer) Forward(input [][][]float32) ([][][]float32, error
 		for i := range input {
 			go func(i int, doneCh chan bool) {
 				in := ConvertMatrix(input[i])
-				inExMat := NewExMatFromDense(in)
+				inExMat := exmat.NewExMatFromDense(in)
 				input[i] = ConvertMat64(inExMat.ZeroPadding(conv.Padding))
 				doneCh <- true
 			}(i, doneCh)
