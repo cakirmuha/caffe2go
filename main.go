@@ -15,7 +15,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/gkostadinov/caffe2go/c2g"
+	"github.com/cakirmuha/caffe2go/c2g"
+	"image"
 )
 
 func loadMeans(meanFile string) ([]float32, error) {
@@ -88,7 +89,17 @@ func main() {
 		defer cf.Close()
 		pprof.StartCPUProfile(cf)
 	}
-	output, err := caffe2go.Predict(imagePath, shape, means)
+	reader, err := os.Open(imagePath)
+	if err != nil {
+		panic(err)
+	}
+	defer reader.Close()
+	img, _, err := image.Decode(reader)
+	if err != nil {
+		panic(err)
+	}
+
+	output, err := caffe2go.Predict(img, shape, means,"")
 	if err != nil {
 		log.Fatalln(err)
 	}

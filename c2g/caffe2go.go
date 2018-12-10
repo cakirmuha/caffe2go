@@ -7,9 +7,9 @@ import (
 	"io/ioutil"
 	"log"
 
-	"github.com/gkostadinov/caffe2go/caffe"
-	"github.com/gkostadinov/caffe2go/layers"
-	"github.com/gkostadinov/caffe2go/network"
+	"github.com/cakirmuha/caffe2go/caffe"
+	"github.com/cakirmuha/caffe2go/layers"
+	"github.com/cakirmuha/caffe2go/network"
 	"github.com/golang/protobuf/proto"
 	"github.com/nfnt/resize"
 )

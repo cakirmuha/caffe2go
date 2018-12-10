@@ -3,7 +3,7 @@ package c2g
 import (
 	"errors"
 
-	"github.com/gkostadinov/caffe2go/layers"
+	"github.com/cakirmuha/caffe2go/layers"
 )
 
 // SetupConvolution setups ConvolutionLayer from caffe model.

@@ -41,7 +41,7 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	"github.com/Rompei/caffe2go/c2g"
+	"github.com/cakirmuha/caffe2go/c2g"
 )
 
 func main() {

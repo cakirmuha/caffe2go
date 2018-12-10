@@ -3,7 +3,7 @@ package layers
 import (
 	"testing"
 
-	"github.com/Rompei/mat"
+	"gonum.org/v1/gonum/mat"
 )
 
 func TestLRN(t *testing.T) {

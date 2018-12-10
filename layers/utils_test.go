@@ -3,8 +3,7 @@ package layers
 import (
 	"testing"
 
-	"github.com/Rompei/mat"
-	"github.com/gonum/matrix/mat64"
+	"gonum.org/v1/gonum/mat"
 )
 
 func TestIm2Col(t *testing.T) {
@@ -83,7 +82,7 @@ func TestConvertMatrix(t *testing.T) {
 }
 
 func TestConvertMat64(t *testing.T) {
-	src := mat64.NewDense(3, 4, []float64{
+	src := mat.NewDense(3, 4, []float64{
 		1, 2, 3, 4,
 		5, 6, 7, 8,
 		9, 10, 11, 12,

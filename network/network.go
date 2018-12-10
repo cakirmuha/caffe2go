@@ -1,7 +1,7 @@
 package network
 
 import (
-	"github.com/gkostadinov/caffe2go/layers"
+	"github.com/cakirmuha/caffe2go/layers"
 )
 
 // Network have netword definition.

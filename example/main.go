@@ -5,7 +5,9 @@ import (
 	_ "image/jpeg"
 	_ "image/png"
 
-	"github.com/gkostadinov/caffe2go/c2g"
+	"github.com/cakirmuha/caffe2go/c2g"
+	"os"
+	"image"
 )
 
 func main() {
@@ -13,7 +15,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	output, err := caffe2go.Predict("mnist_zero.png", 28, nil)
+	reader, err := os.Open("mnist_zero.png")
+	if err != nil {
+		panic(err)
+	}
+	defer reader.Close()
+	img, _, err := image.Decode(reader)
+	if err != nil {
+		panic(err)
+	}
+
+	output, err := caffe2go.Predict(img, 28, nil, "")
 	if err != nil {
 		panic(err)
 	}
